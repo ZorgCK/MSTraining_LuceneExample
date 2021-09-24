@@ -25,18 +25,6 @@ public class BookController
 		
 		DB.root.getBooks().addAll(allCreatedBooks);
 		
-		return HttpResponse.ok("Books successfully created!");
-	}
-	
-	@Get
-	public List<Book> getBook()
-	{
-		return DB.root.getBooks().all();
-	}
-	
-	@Get("/createIndex")
-	public HttpResponse<?> createLuceneIndex()
-	{
 		try
 		{
 			LuceneUtils.createIndex();
@@ -47,8 +35,30 @@ public class BookController
 			e.printStackTrace();
 		}
 		
-		return HttpResponse.ok("Index successfully cleared!");
+		return HttpResponse.ok("Books successfully created!");
 	}
+	
+	@Get
+	public List<Book> getBook()
+	{
+		return DB.root.getBooks().all();
+	}
+	
+	// @Get("/createIndex")
+	// public HttpResponse<?> createLuceneIndex()
+	// {
+	// try
+	// {
+	// LuceneUtils.createIndex();
+	// }
+	// catch(IOException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// return HttpResponse.ok("Index successfully cleared!");
+	// }
 	
 	@Get("/searchLucene")
 	public HttpResponse<List<String>> searchWithLucene()

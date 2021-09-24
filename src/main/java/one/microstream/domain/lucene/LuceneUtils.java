@@ -51,7 +51,7 @@ public class LuceneUtils
 		IndexWriter writer = createWriter();
 		List<Document> documents = new ArrayList<>();
 		
-		DB.root.getBooks().get().forEach(b ->
+		DB.root.getBooks().all().forEach(b ->
 		{
 			Document doc = createDocument(b.getIsbn(), b.getName());
 			documents.add(doc);
@@ -86,7 +86,7 @@ public class LuceneUtils
 		{
 			try
 			{
-				return searcher.doc(h.doc).get("title");
+				return searcher.doc(h.doc).get("isbn");
 			}
 			catch(IOException e)
 			{
