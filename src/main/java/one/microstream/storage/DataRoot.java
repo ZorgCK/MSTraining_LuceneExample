@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import one.microstream.domain.Book;
+import one.microstream.reference.Lazy;
 
 
 public class DataRoot
 {
-	private final List<Book> books = new ArrayList<Book>();
+	private final Lazy<List<Book>> books = Lazy.Reference(new ArrayList<Book>());
 	
-	public List<Book> getBooks()
+	public Lazy<List<Book>> getBooks()
 	{
 		return books;
 	}
