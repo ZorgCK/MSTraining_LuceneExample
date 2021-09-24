@@ -1,17 +1,13 @@
 package one.microstream.storage;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import one.microstream.domain.Book;
-import one.microstream.reference.Lazy;
+import one.microstream.domain.Books;
 
 
 public class DataRoot
 {
-	private final Lazy<List<Book>> books = Lazy.Reference(new ArrayList<Book>());
+	private final Books books = new Books();
 	
-	public Lazy<List<Book>> getBooks()
+	public Books getBooks()
 	{
 		return books;
 	}
