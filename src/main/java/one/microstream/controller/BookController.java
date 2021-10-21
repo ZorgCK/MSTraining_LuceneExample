@@ -44,22 +44,6 @@ public class BookController
 		return DB.root.getBooks().all();
 	}
 	
-	// @Get("/createIndex")
-	// public HttpResponse<?> createLuceneIndex()
-	// {
-	// try
-	// {
-	// LuceneUtils.createIndex();
-	// }
-	// catch(IOException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// return HttpResponse.ok("Index successfully cleared!");
-	// }
-	
 	@Get("/searchLucene")
 	public HttpResponse<List<String>> searchWithLucene()
 	{
