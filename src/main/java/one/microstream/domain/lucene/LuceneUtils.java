@@ -15,6 +15,7 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -23,6 +24,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import one.microstream.domain.Book;
 import one.microstream.storage.DB;
 
 
@@ -34,6 +36,7 @@ public class LuceneUtils
 		
 		FSDirectory dir = FSDirectory.open(Paths.get(property));
 		IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+		config.setOpenMode(OpenMode.CREATE_OR_APPEND);
 		IndexWriter writer = new IndexWriter(dir, config);
 		return writer;
 	}
@@ -95,5 +98,34 @@ public class LuceneUtils
 		}).collect(Collectors.toList());
 		
 		return collect;
+	}
+	
+	public static void updateIndex(List<Book> books)
+	{
+		try
+		{
+			IndexWriter writer = createWriter();
+			
+			books.forEach(b ->
+			{
+				try
+				{
+					writer.addDocument(createDocument(b.getIsbn(), b.getName()));
+					writer.commit();
+					writer.close();
+				}
+				catch(IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		}
+		catch(Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

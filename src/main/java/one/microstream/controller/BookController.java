@@ -1,14 +1,19 @@
 package one.microstream.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import one.microstream.domain.Author;
 import one.microstream.domain.Book;
 import one.microstream.domain.lucene.LuceneUtils;
 import one.microstream.storage.DB;
@@ -60,5 +65,20 @@ public class BookController
 		}
 		
 		return HttpResponse.ok(searchByTitle);
+	}
+	
+	@Get("/insert")
+	public HttpResponse<?> insert()
+	{
+		Optional<Author> optionalAuthor = DB.root.getBooks().all().stream().map(b -> b.getAuthor()).filter(
+			a -> a.getLastname().equalsIgnoreCase("Jaggi")).findAny();
+		
+		Book book = new Book("123456789", "A great star", LocalDate.now(), new BigDecimal(10.30), optionalAuthor.get());
+		
+		DB.root.getBooks().add(book);
+		
+		LuceneUtils.updateIndex(Arrays.asList(book));
+		
+		return HttpResponse.ok("Books successfully inserted!");
 	}
 }
